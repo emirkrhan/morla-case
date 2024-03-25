@@ -1,13 +1,14 @@
 import React, { useState, useContext, useEffect } from 'react'
 import Grid from '@mui/material/Grid';
 import Card from '@mui/material/Card';
-import { Box, CardContent, Typography } from '@mui/material';
+import { Box, CardContent, InputAdornment, TextField, Typography } from '@mui/material';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormGroup from '@mui/material/FormGroup';
 import Checkbox from '@mui/material/Checkbox';
 import AppContext from './context/AppContext';
+import { SearchRounded } from '@mui/icons-material';
 
 function Filtering() {
 
@@ -24,6 +25,8 @@ function Filtering() {
 
     const [categories, setCategories] = useState([]);
     const [model, setModel] = useState([]);
+    const [searchCategory, setSearchCategory] = useState('');
+    const [searchModel, setSearchModel] = useState('');
 
     const handleChange = (e) => {
         setValue(e.target.value);
@@ -97,7 +100,37 @@ function Filtering() {
                 <Card sx={{ maxHeight: '190px', overflow: 'auto', mb: 3 }}>
                     <CardContent>
                         <FormGroup>
-                            {categories.map((category, index) => (
+
+                            <TextField
+                                value={searchCategory}
+                                placeholder='Ara...'
+                                onChange={(e) => setSearchCategory(e.target.value)}
+                                id="searchCategory"
+                                size="small"
+                                sx={{
+                                    '& .MuiOutlinedInput-root': {
+                                        '& fieldset': {
+                                            border: 'none',
+                                        },
+                                        '&:hover fieldset': {
+                                            border: 'none',
+                                        },
+                                        '&.Mui-focused fieldset': {
+                                            border: 'none',
+                                        },
+                                    },
+                                    backgroundColor: '#f0f0f0',
+                                    borderRadius: '3px'
+                                }}
+                                InputProps={{
+                                    startAdornment: (
+                                        <InputAdornment position="start">
+                                            <SearchRounded />
+                                        </InputAdornment>
+                                    ),
+                                }}
+                            />
+                            {categories.filter(category => category.toLowerCase().includes(searchCategory.toLowerCase())).map((category, index) => (
                                 <FormControlLabel
                                     key={index}
                                     control={
@@ -124,7 +157,38 @@ function Filtering() {
                 <Card sx={{ maxHeight: '190px', overflow: 'auto' }}>
                     <CardContent>
                         <FormGroup>
-                            {model.map((model, index) => (
+
+                            <TextField
+                                value={searchModel}
+                                placeholder='Ara...'
+                                onChange={(e) => setSearchModel(e.target.value)}
+                                id="searchModel"
+                                size="small"
+                                sx={{
+                                    '& .MuiOutlinedInput-root': {
+                                        '& fieldset': {
+                                            border: 'none',
+                                        },
+                                        '&:hover fieldset': {
+                                            border: 'none',
+                                        },
+                                        '&.Mui-focused fieldset': {
+                                            border: 'none',
+                                        },
+                                    },
+                                    backgroundColor: '#f0f0f0',
+                                    borderRadius: '3px'
+                                }}
+                                InputProps={{
+                                    startAdornment: (
+                                        <InputAdornment position="start">
+                                            <SearchRounded />
+                                        </InputAdornment>
+                                    ),
+                                }}
+                            />
+
+                            {model.filter(model => model.toLowerCase().includes(searchModel.toLowerCase())).map((model, index) => (
                                 <FormControlLabel
                                     key={index}
                                     control={

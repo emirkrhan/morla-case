@@ -32,7 +32,7 @@ function HomePage() {
             <PrimarySearchAppBar />
             <Grid container spacing={2} sx={{ mt: 10 }}>
                 <Filtering />
-                <Grid item xs={12} md={6} container spacing={2}>
+                <Grid container item xs={12} md={6} spacing={2}>
                     {currentProducts.map((product, index) => (
                         <Grid item xs={12} sm={6} md={3} key={index}>
                             <Card sx={{ display: 'flex', flexDirection: 'column' }}>
@@ -64,12 +64,12 @@ function HomePage() {
                             </Card>
                         </Grid>
                     ))}
-                    <Grid item xs={12} container justifyContent="center" sx={{ mt: 2 }}>
+                    <Grid item xs={12} sx={{ mt: 2, display: 'flex', justifyContent: 'center' }}>
                         <Pagination
                             count={pageCount}
                             page={currentPage}
                             onChange={handleChangePage}
-                            variant="outlined"
+                            variant="text"
                             color="primary"
                             boundaryCount={1}
                             siblingCount={1}
