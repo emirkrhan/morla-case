@@ -18,6 +18,7 @@ export const AppProvider = ({ children }) => {
     const productsPerPage = 12;
     const indexOfLastProduct = currentPage * productsPerPage;
     const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+    const [searchTerm, setSearchTerm] = useState('');
 
     const getFilteredAndSortedProducts = () => {
         const filtered = products.filter(product =>
@@ -45,11 +46,18 @@ export const AppProvider = ({ children }) => {
     };
 
     const filteredAndSortedProducts = getFilteredAndSortedProducts();
-    const currentProducts = filteredAndSortedProducts.slice(indexOfFirstProduct, indexOfLastProduct);
-    const pageCount = Math.ceil(filteredAndSortedProducts.length / productsPerPage);
+
+    const searchedProducts = filteredAndSortedProducts.filter(product => {
+        const productString = `${product.brand.toLowerCase()} ${product.model.toLowerCase()}`;
+        return searchTerm === '' || productString.includes(searchTerm.toLowerCase());
+    });
+    
+
+    const currentProducts = searchedProducts.slice(indexOfFirstProduct, indexOfLastProduct);
+    const pageCount = Math.ceil(searchedProducts.length / productsPerPage);
     const sepet = useSelector((state) => state.sepet.sepet);
     const totalAmount = sepet.reduce((toplam, urun) => toplam + urun.price * urun.quantity, 0).toFixed(2);
-    const [searchTerm, setSearchTerm] = useState('');
+
 
     const addProducts = (prs) => {
         dispatch(addProductToCart(prs));
