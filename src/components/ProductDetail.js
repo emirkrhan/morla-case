@@ -38,7 +38,7 @@ function ProductDetail() {
                 <Grid item xs={12} md={9} spacing={2} sx={{ display: 'flex', justifyContent: 'center' }}>
                     <Card sx={{ mx: 2, width: '90%' }}>
                         <CardContent>
-                            <Grid spacing={2}>
+                            <Grid container spacing={2}>
                                 <Grid item xs={6}>
                                     <CardMedia
                                         component="img"
