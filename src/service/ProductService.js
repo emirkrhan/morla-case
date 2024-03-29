@@ -6,7 +6,7 @@ class ProductService {
     }
 
     async getAllProducts() {
-        return await axios.get(`${this.baseUrl}`).then((response) => response.data);
+        return await axios.get(this.baseUrl).then((response) => response.data);
     }
 
     async getOneProduct(id) {
