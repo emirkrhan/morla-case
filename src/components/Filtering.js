@@ -14,7 +14,7 @@ function Filtering() {
 
     const {
         value,
-        products,
+        data,
         setValue,
         selectedCategories,
         setSelectedCategories,
@@ -34,11 +34,11 @@ function Filtering() {
     };
 
     useEffect(() => {
-        const categorySet = new Set(products.map(product => product.brand));
-        const modelSet = new Set(products.map(product => product.model));
+        const categorySet = new Set(data.map(product => product.brand));
+        const modelSet = new Set(data.map(product => product.model));
         setCategories([...categorySet]);
         setModel([...modelSet]);
-    }, [products]);
+    }, [data]);
 
     const handleCategoryChange = (e) => {
         const category = e.target.name;

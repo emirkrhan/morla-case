@@ -1,13 +1,14 @@
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
-import { setProducts, addProductToCart } from '../../redux/actions'
-import ProductService from "../../service/ProductService";
+import { addProductToCart } from '../../redux/actions'
+import axios from "axios";
+import { useQuery } from "@tanstack/react-query";
+
 
 const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {
     const dispatch = useDispatch();
-    const products = useSelector((state) => state.products.products);
     const [sortedProducts, setSortedProducts] = useState([]);
     const [selectedCategories, setSelectedCategories] = useState(new Set());
     const [selectedModels, setSelectedModels] = useState(new Set());
@@ -19,9 +20,16 @@ export const AppProvider = ({ children }) => {
     const indexOfLastProduct = currentPage * productsPerPage;
     const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
     const [searchTerm, setSearchTerm] = useState('');
+    const baseUrl = "https://5fc9346b2af77700165ae514.mockapi.io/products";
+
+    const { isLoading, error, data } = useQuery({
+        queryKey: ['products'],
+        queryFn: () => axios.get(baseUrl).then(res => res.data)
+    });
 
     const getFilteredAndSortedProducts = () => {
-        const filtered = products.filter(product =>
+        if (!data) return [];
+        const filtered = data.filter(product =>
             (selectedCategories.size === 0 || selectedCategories.has(product.brand)) &&
             (selectedModels.size === 0 || selectedModels.has(product.model))
         );
@@ -51,7 +59,6 @@ export const AppProvider = ({ children }) => {
         const productString = `${product.brand.toLowerCase()} ${product.model.toLowerCase()}`;
         return searchTerm === '' || productString.includes(searchTerm.toLowerCase());
     });
-    
 
     const currentProducts = searchedProducts.slice(indexOfFirstProduct, indexOfLastProduct);
     const pageCount = Math.ceil(searchedProducts.length / productsPerPage);
@@ -62,13 +69,6 @@ export const AppProvider = ({ children }) => {
     const addProducts = (prs) => {
         dispatch(addProductToCart(prs));
     }
-
-    useEffect(() => {
-        const productService = new ProductService();
-        productService.getAllProducts().then((data) => {
-            dispatch(setProducts(data));
-        });
-    }, [dispatch]);
 
     const handleChangePage = (event, newPage) => {
         setCurrentPage(newPage);
@@ -100,7 +100,6 @@ export const AppProvider = ({ children }) => {
         value,
         setValue,
         currentProducts,
-        products,
         sortedProducts,
         setSortedProducts,
         selectedCategories,
@@ -109,7 +108,11 @@ export const AppProvider = ({ children }) => {
         setSelectedModels,
         sortProducts,
         sortValue,
-        setSortValue
+        setSortValue,
+        isLoading,
+        error,
+        data,
+        baseUrl
     };
 
     return <AppContext.Provider value={values}>{children}</AppContext.Provider>;

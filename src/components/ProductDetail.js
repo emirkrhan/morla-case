@@ -1,6 +1,5 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useContext } from 'react';
 import { useParams } from 'react-router-dom';
-import ProductService from '../service/ProductService';
 import Grid from '@mui/material/Grid';
 import Card from '@mui/material/Card';
 import ShoppingCart from './ShoppingCart';
@@ -11,25 +10,27 @@ import { Typography } from '@mui/material';
 import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
 
 function ProductDetail() {
 
     const {
         addProducts,
-        handleClick
+        handleClick,
+        baseUrl
     } = useContext(AppContext);
 
     let { id } = useParams();
-    const [product, setProduct] = useState(null);
 
-    useEffect(() => {
-        const productService = new ProductService();
-        productService.getOneProduct(id)
-            .then(data => setProduct(data))
-            .catch(error => console.error("Ürün detaylarını alırken bir hata oluştu!", error));
-    }, [id]);
+    const { data: product, isLoading, error } = useQuery({
+        queryKey: ['product', id],
+        queryFn: () => axios.get(`${baseUrl}/${id}`).then(res => res.data),
+        enabled: !!id
+    });
 
-    if (!product) return <div>Loading...</div>;
+    if (isLoading) return <div>Loading...</div>;
+    if (error) return <div>An error occurred: {error.message}</div>;
 
     return (
         <div>

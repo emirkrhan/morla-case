@@ -24,8 +24,14 @@ function HomePage() {
         handleChangePage,
         currentProducts,
         open,
-        handleClose
+        handleClose,
+        isLoading,
+        error
     } = useContext(AppContext);
+
+    
+    if (isLoading) return <div>Loading...</div>;
+    if (error) return <div>An error occurred: {error.message}</div>;
 
     return (
         <div>
@@ -33,8 +39,8 @@ function HomePage() {
             <Grid container spacing={2} sx={{ mt: 10 }}>
                 <Filtering />
                 <Grid container item xs={12} md={6} spacing={2}>
-                    {currentProducts.map((product, index) => (
-                        <Grid item xs={12} sm={6} md={3} key={index}>
+                    {currentProducts.map((product) => (
+                        <Grid item xs={12} sm={6} md={3} key={product.id}>
                             <Card sx={{ display: 'flex', flexDirection: 'column' }}>
                                 <div style={{ padding: '7px', width: '100%', aspectRatio: 1 / 1 }}>
                                     <CardMedia
