@@ -59,6 +59,15 @@ export default function PrimarySearchAppBar() {
     setSearchTerm
   } = useContext(AppContext);
 
+  const [userName, setUserName] = React.useState('');
+
+  React.useEffect(() => {
+    const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+    if (userInfo) {
+      setUserName(userInfo.firstName + ' ' + userInfo.lastName);
+    }
+  }, []);
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="fixed" elevation={0}>
@@ -97,7 +106,7 @@ export default function PrimarySearchAppBar() {
               variant="body1"
               component="div"
               sx={{ display: { xs: 'none', sm: 'block' }, fontSize: '14px' }}>
-               <Link className='link-no-style' to='/register'>Giriş Yap</Link>
+             {userName === '' ?  <Link className='link-no-style' to='/register'>Giriş Yap</Link> : userName}
             </Typography>
           </Box>
 

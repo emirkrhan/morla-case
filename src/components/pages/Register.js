@@ -12,6 +12,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import { useNavigate } from 'react-router-dom';
 
 function Copyright(props) {
   return (
@@ -27,6 +28,8 @@ function Copyright(props) {
 }
 
 export default function Register() {
+
+  const navigate = useNavigate();
 
   const validationSchema = Yup.object({
     firstName: Yup.string().required("Zorunlu alan"),
@@ -46,7 +49,9 @@ export default function Register() {
     },
     validationSchema,
     onSubmit: (values) => {
-      console.log(values);
+      const userInfo = JSON.stringify(values);
+      localStorage.setItem('userInfo', userInfo);
+      navigate('/login')
     },
   });
 
@@ -168,7 +173,7 @@ export default function Register() {
           </Button>
           <Grid container justifyContent="center">
             <Grid item>
-              <Link href="#" variant="body2">
+              <Link href='/login' variant="body2">
                 Zaten hesabınız var mı? Oturum Aç
               </Link>
             </Grid>
