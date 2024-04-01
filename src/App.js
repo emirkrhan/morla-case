@@ -7,6 +7,7 @@ import { Route, Routes } from 'react-router-dom';
 import ProductDetail from './components/ProductDetail';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
+import Register from "./components/pages/Register";
 
 const theme = createTheme({
   palette: {
@@ -47,6 +48,7 @@ export default function App() {
       <Routes>
         <Route path='/' element={<HomePage />} />
         <Route path="/product/:id" element={<ProductDetail />} />
+        <Route path="/register" element={<Register />} />
       </Routes>
     </ThemeProvider>
   )
