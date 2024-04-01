@@ -10,6 +10,7 @@ import LocalMallOutlinedIcon from '@mui/icons-material/LocalMallOutlined';
 import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
 import { useContext } from 'react';
 import AppContext from './context/AppContext';
+import { Link } from 'react-router-dom';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -96,7 +97,7 @@ export default function PrimarySearchAppBar() {
               variant="body1"
               component="div"
               sx={{ display: { xs: 'none', sm: 'block' }, fontSize: '14px' }}>
-              Emirhan Körhan
+               <Link className='link-no-style' to='/register'>Giriş Yap</Link>
             </Typography>
           </Box>
 
