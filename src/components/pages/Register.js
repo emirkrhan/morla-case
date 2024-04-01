@@ -32,7 +32,7 @@ export default function Register() {
     firstName: Yup.string().required("Zorunlu alan"),
     lastName: Yup.string().required("Zorunlu alan"),
     email: Yup.string().email('Geçersiz e-mail adresi').required('Zorunlu alan'),
-    password: Yup.string().required('Zorunlu alan'),
+    password: Yup.string().required('Zorunlu alan').min(8, 'Şifre en az 8 karakter olmalıdır'),
     acceptBox: Yup.bool().required('Zorunlu alan').oneOf([true], 'Şartlar ve koşulları kabul etmelisiniz'),
   });
 
@@ -133,7 +133,10 @@ export default function Register() {
               />
 
               {values.password === '' && submitCount > 0 ?
-                (<Typography sx={{ fontSize: '12px' }} color="error">{errors.password}</Typography>) : null}
+                (<Typography sx={{ fontSize: '12px' }} color="error">{errors.password}</Typography>) :
+                (values.password !== '' && values.password.length < 8 && errors.password ?
+                  (<Typography sx={{ fontSize: '12px' }} color="error">{errors.password}</Typography>) : null)}
+
 
             </Grid>
             <Grid item xs={12}>
